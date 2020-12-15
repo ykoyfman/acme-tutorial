@@ -19,14 +19,14 @@ The steps here can be carried out in less than 30 minutes.
 
 # Step 1: Create a route with the default certificate.
 
+If you follow the example in [Example Bank](https://github.com/IBM/example-bank) and deploy the application, you will have a front-end service called `mobile-simulator-service` that listens on port 8080. Switch to the `example-bank` project/namespace, in the Administrator mode, select _Networking_ then _Routes_ from the left hand navigation pane, then select _Create Route_. In this step, we'll create a route secured with the default set of certificates.
+
 ![screenshot](img002.png)
 
-Create a secure route for your application, you can use the default OpenShift certificates.
 
-Note that this creates a route that uses the OpenShift default certificates, which will generally results in errors from web browsers because its certificates will nto match the hostname, in our case, `staging.bank.ibmdeveloper.net`:
+Because this creates a route that uses the OpenShift default certificates, which will generally results in errors from web browsers because its certificates will nto match the hostname, in our case, `staging.bank.ibmdeveloper.net`:
 
 ![screenshot](img003.png)
-![screenshot](img004.png)
 ![screenshot](img005.png)
 
 Notice also the "not secure" warning near the address bar.
@@ -43,11 +43,14 @@ Because I'm using an account with `cluster-admin` rights, we'll install the clus
 
 ```
 
-oc new-project acme-operator
+$ oc new-project acme-operator
 
-oc create -fhttps://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/cluster-wide/{clusterrole,serviceaccount,issuer-letsencrypt-live,deployment}.yaml
+$ oc create -fhttps://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/cluster-wide/{clusterrole,serviceaccount,issuer-letsencrypt-live,deployment}.yaml
+```
 
-$  [k|acme-operator] #  oc get pods
+After a few moments, you will be able to see the pods 
+```
+$  oc get pods
 NAME                              READY   STATUS    RESTARTS   AGE
 openshift-acme-59bf8765dd-9pxgw   1/1     Running   0          16s
 openshift-acme-59bf8765dd-xwngl   1/1     Running   0          16s
