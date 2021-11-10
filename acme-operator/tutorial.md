@@ -12,6 +12,7 @@ We're going to show how we can add automatic certificate renewals to an instance
 # Prerequisites
 
 - Access to an OpenShift 4.x cluster. The steps here were carried out with a cluster on [IBM Cloud](https://www.ibm.com/cloud/openshift).
+- A domain name you own.
 
 # Estimated time
 
@@ -19,12 +20,12 @@ The steps here can be carried out in less than 30 minutes.
 
 # Step 1: Create a route with the default certificate.
 
-If you follow the example in [Example Bank](https://github.com/IBM/example-bank) and deploy the application, you will have a front-end service called `mobile-simulator-service` that listens on port 8080. Switch to the `example-bank` project/namespace, in the Administrator mode, select _Networking_ then _Routes_ from the left hand navigation pane, then select _Create Route_. In this step, we'll create a route secured with the default set of certificates.
+If you follow the example in [Example Bank](https://github.com/IBM/example-bank) and deploy the application, you will have a front-end service called `mobile-simulator-service` that listens on port 8080. Switch to the `example-bank` project/namespace, in the Administrator mode, select _Networking_ then _Routes_ from the left hand navigation pane, then select _Create Route_. In this step, we'll create a route secured with the default set of certificates. The screenshots contain the values that should be used in the step, such as the host name.
 
 ![screenshot](img002.png)
 
 
-Because this creates a route that uses the OpenShift default certificates, which will generally results in errors from web browsers because its certificates will nto match the hostname, in our case, `staging.bank.ibmdeveloper.net`:
+Because this creates a route that uses the OpenShift default certificates, which will generally results in errors from web browsers because its certificates will not match the hostname, in our case, `staging.bank.ibmdeveloper.net`:
 
 ![screenshot](img003.png)
 ![screenshot](img005.png)
@@ -63,11 +64,11 @@ Verify that the operator is running.
 Create a role binding for the `openshift-acme` ServiceAccount.
 
 ```
-oc create clusterrolebinding openshift-acme --clusterrole=openshift-acme --serviceaccount="$( oc project -q ):openshift-acme" --dry-run -o yaml | oc create -f -
+$ oc create clusterrolebinding openshift-acme --clusterrole=openshift-acme --serviceaccount="$( oc project -q ):openshift-acme" --dry-run -o yaml | oc create -f -
 ```
 # Step 4
 
-Annotate your route. This can be done either in the console (screenshot)...
+Annotate your route. This can be done either in the console via the 'Actions' dropdown menu -> 'Edit Annotations' (screenshot)...
 
 ![screenshot](img007.png)
 
